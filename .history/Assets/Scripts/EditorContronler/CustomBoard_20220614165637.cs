@@ -102,6 +102,7 @@ public class CustomBoard : MonoBehaviour
             InfoWord _scriptWord = transformWordInfor.GetComponent<InfoWord>();
             ListWordInfo.Add(_scriptWord);
         }
+        Debug.Log(DifficultyInfo.Log());
     }
     public void RandomWord()
     {

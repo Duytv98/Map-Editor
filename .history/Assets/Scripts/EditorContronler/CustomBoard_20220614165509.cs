@@ -28,13 +28,13 @@ public class CustomBoard : MonoBehaviour
     private DifficultyInfo difficultyInfo = null;
     private float sizeWord = 70f;
     Dictionary<string, Word> wordDic = null;
-    private List<InfoWord> listWordInfo = null;
+    private List<InfoWord> wordInfoDic = null;
 
     public InfoWord InfoWord { get => infoWord; set => infoWord = value; }
     public bool ClearWord { get => clearWord; set => clearWord = value; }
     public DifficultyInfo DifficultyInfo { get => difficultyInfo; set => difficultyInfo = value; }
     public Dictionary<string, Word> WordDic { get => wordDic; set => wordDic = value; }
-    public List<InfoWord> ListWordInfo { get => listWordInfo; set => listWordInfo = value; }
+
 
     private void Awake()
     {
@@ -48,7 +48,7 @@ public class CustomBoard : MonoBehaviour
     private void Start()
     {
         WordDic = new Dictionary<string, Word>();
-        ListWordInfo = new List<InfoWord>();
+        wordInfoDic = new List<InfoWord>();
         DifficultyInfo = GameDefine.DIFFICULTYINFOS[0];
         CreateBoard();
         btnClear.color = ClearWord ? Color.white : Color.gray;
@@ -100,8 +100,8 @@ public class CustomBoard : MonoBehaviour
             Transform transformWordInfor = Instantiate(wordAdd, Vector3.zero, Quaternion.identity, contentWordsAdd);
 
             InfoWord _scriptWord = transformWordInfor.GetComponent<InfoWord>();
-            ListWordInfo.Add(_scriptWord);
         }
+        Debug.Log(DifficultyInfo.Log());
     }
     public void RandomWord()
     {

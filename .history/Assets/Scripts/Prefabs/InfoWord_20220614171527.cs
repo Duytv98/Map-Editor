@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class InfoWord : MonoBehaviour
 {
     [SerializeField] private Image bg = null;
+
     [SerializeField] private InputField inputWord = null;
+
     private Board.WordPlacement wordPlacement = null;
+
 
     private string word;
     private int maxWord = 0;
@@ -79,6 +83,7 @@ public class InfoWord : MonoBehaviour
             getWordBoard = true;
         }
         else if (!Word.Equals(wordChoose)) return;
+
         strartWord = position;
         bgTxtStartWord.text = string.Format("{0}x{1}", position.col, position.row);
         txtStartWord.text = string.Format("{0}x{1}", position.col, position.row);
@@ -89,8 +94,6 @@ public class InfoWord : MonoBehaviour
         wordUseDic.Clear();
         Debug.Log("SetEndWord");
         Tuple<bool, string> status = CheckLine(strartWord, position);
-        Debug.Log("wordPlacement");
-        Debug.Log(JsonUtility.ToJson(wordPlacement));
         Debug.Log("status: " + status.Item1 + "word: " + status.Item2);
         if (status.Item1 && getWordBoard)
         {
@@ -127,7 +130,7 @@ public class InfoWord : MonoBehaviour
         int maxCol = CustomBoard.Instance.DifficultyInfo.boardColumnSize;
 
         Position tempPos = new Position(startPos.row, startPos.col);
-        var word = CustomBoard.Instance.GetWordChoose(tempPos.row, tempPos.col);
+        var word = CustomBoard.Instance.GetWordChoose(tempPos.row, tempPos.col).ToString();
         dictionary.Add(CustomBoard.Instance.GetKeyWord(tempPos.row, tempPos.col), word);
         string wordChoose = word.InText;
         bool status = false;
@@ -144,7 +147,7 @@ public class InfoWord : MonoBehaviour
         }
         if (status) wordUseDic = dictionary;
 
-        wordPlacement.word = wordChoose;
+        wordPlacement.word = word;
         return Tuple.Create(status, wordChoose);
     }
 

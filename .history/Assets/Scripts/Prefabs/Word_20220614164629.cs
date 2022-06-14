@@ -31,14 +31,15 @@ public class Word : MonoBehaviour
     }
     public void OnValueChanged(string str)
     {
+        Debug.Log("changed");
         var upperText = str.ToUpper();
-        Debug.Log(upperText);
         Debug.Log(CHARACTERS.Contains(upperText));
 
         if (CHARACTERS.Contains(upperText))
         {
             if (upperText != outText.text)
             {
+                Debug.Log("=========================");
                 outText.text = upperText;
                 InText = outText.text;
             }

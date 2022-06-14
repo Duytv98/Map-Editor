@@ -100,8 +100,9 @@ public class CustomBoard : MonoBehaviour
             Transform transformWordInfor = Instantiate(wordAdd, Vector3.zero, Quaternion.identity, contentWordsAdd);
 
             InfoWord _scriptWord = transformWordInfor.GetComponent<InfoWord>();
-            ListWordInfo.Add(_scriptWord);
+            
         }
+        Debug.Log(DifficultyInfo.Log());
     }
     public void RandomWord()
     {

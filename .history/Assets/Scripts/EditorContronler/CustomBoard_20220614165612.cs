@@ -48,7 +48,7 @@ public class CustomBoard : MonoBehaviour
     private void Start()
     {
         WordDic = new Dictionary<string, Word>();
-        ListWordInfo = new List<InfoWord>();
+        WordInfoDic = new List<InfoWord>();
         DifficultyInfo = GameDefine.DIFFICULTYINFOS[0];
         CreateBoard();
         btnClear.color = ClearWord ? Color.white : Color.gray;
@@ -100,8 +100,9 @@ public class CustomBoard : MonoBehaviour
             Transform transformWordInfor = Instantiate(wordAdd, Vector3.zero, Quaternion.identity, contentWordsAdd);
 
             InfoWord _scriptWord = transformWordInfor.GetComponent<InfoWord>();
-            ListWordInfo.Add(_scriptWord);
+            
         }
+        Debug.Log(DifficultyInfo.Log());
     }
     public void RandomWord()
     {

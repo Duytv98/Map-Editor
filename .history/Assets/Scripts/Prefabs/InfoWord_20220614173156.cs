@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class InfoWord : MonoBehaviour
 {
     [SerializeField] private Image bg = null;

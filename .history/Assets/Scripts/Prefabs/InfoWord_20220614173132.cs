@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class InfoWord : MonoBehaviour
 {
     [SerializeField] private Image bg = null;
+
     [SerializeField] private InputField inputWord = null;
+
     private Board.WordPlacement wordPlacement = null;
+
 
     private string word;
     private int maxWord = 0;

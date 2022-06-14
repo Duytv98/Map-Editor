@@ -137,4 +137,18 @@ public class Board
 
         return json;
     }
+
+    public void ShuffleListString()
+    {
+        for (int i = 0; i < words.Count; i++)
+        {
+            string temp = words[i];
+            int randomIndex = Random.Range(i, words.Count);
+            words[i] = words[randomIndex];
+            words[randomIndex] = temp;
+        }
+    }
+
+
+
 }

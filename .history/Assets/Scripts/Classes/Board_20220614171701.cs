@@ -30,6 +30,8 @@ public class Board
     public List<string> words;
     public List<List<char>> boardCharacters;
     public List<WordPlacement> wordPlacements;
+    //
+    public HashSet<char> letterHintsUsed = new HashSet<char>();
     public void FromJson(TextAsset levelFile)
     {
         string contents = levelFile.text;
@@ -39,6 +41,7 @@ public class Board
         words = new List<string>();
         boardCharacters = new List<List<char>>();
         wordPlacements = new List<WordPlacement>();
+        locationUnuseds = new List<Position>();
 
         for (int i = 0; i < json["words"].AsArray.Count; i++)
         {
@@ -66,6 +69,30 @@ public class Board
             wordPlacement.verticalDirection = wordPlacementJson["v"].AsInt;
 
             wordPlacements.Add(wordPlacement);
+        }
+        for (int i = 0; i < json["locationUnuseds"].AsArray.Count; i++)
+        {
+            JSONNode locationUnusedJson = json["locationUnuseds"].AsArray[i];
+            Position locationUnused = new Position(locationUnusedJson["row"].AsInt, locationUnusedJson["col"].AsInt);
+            locationUnuseds.Add(locationUnused);
+        }
+
+        for (int i = 0; i < json["foundWords"].AsArray.Count; i++)
+        {
+            foundWords.Add(json["foundWords"].AsArray[i].Value);
+            // Debug.Log(json["foundWords"].AsArray[i].Value);
+        }
+        for (int i = 0; i < json["recommendWords"].AsArray.Count; i++)
+        {
+            recommendWords.Add(json["recommendWords"].AsArray[i].Value);
+        }
+        for (int i = 0; i < json["listWordDeleted"].AsArray.Count; i++)
+        {
+            listWordDeleted.Add(json["listWordDeleted"].AsArray[i].Value);
+        }
+        for (int i = 0; i < json["letterHintsUsed"].AsArray.Count; i++)
+        {
+            letterHintsUsed.Add(json["letterHintsUsed"].AsArray[i].Value[0]);
         }
 
     }
@@ -77,6 +104,7 @@ public class Board
         words = new List<string>();
         boardCharacters = new List<List<char>>();
         wordPlacements = new List<WordPlacement>();
+        locationUnuseds = new List<Position>();
         for (int i = 0; i < json["words"].AsArray.Count; i++)
         {
             words.Add(json["words"].AsArray[i].Value);
@@ -103,6 +131,30 @@ public class Board
             wordPlacement.verticalDirection = wordPlacementJson["v"].AsInt;
 
             wordPlacements.Add(wordPlacement);
+        }
+
+        for (int i = 0; i < json["locationUnuseds"].AsArray.Count; i++)
+        {
+            JSONNode locationUnusedJson = json["locationUnuseds"].AsArray[i];
+            Position locationUnused = new Position(locationUnusedJson["row"].AsInt, locationUnusedJson["col"].AsInt);
+            locationUnuseds.Add(locationUnused);
+        }
+        for (int i = 0; i < json["foundWords"].AsArray.Count; i++)
+        {
+            foundWords.Add(json["foundWords"].AsArray[i].Value);
+            // Debug.Log(json["foundWords"].AsArray[i].Value);
+        }
+        for (int i = 0; i < json["recommendWords"].AsArray.Count; i++)
+        {
+            recommendWords.Add(json["recommendWords"].AsArray[i].Value);
+        }
+        for (int i = 0; i < json["listWordDeleted"].AsArray.Count; i++)
+        {
+            listWordDeleted.Add(json["listWordDeleted"].AsArray[i].Value);
+        }
+        for (int i = 0; i < json["letterHintsUsed"].AsArray.Count; i++)
+        {
+            letterHintsUsed.Add(json["letterHintsUsed"].AsArray[i].Value[0]);
         }
     }
 
@@ -135,6 +187,48 @@ public class Board
 
         json["wordPlacements"] = wordPlacementsJson;
 
+        for (int i = 0; i < locationUnuseds.Count; i++)
+        {
+            Position locationUnused = locationUnuseds[i];
+            Dictionary<string, object> locationUnusedJson = new Dictionary<string, object>();
+
+            locationUnusedJson["row"] = locationUnused.row;
+            locationUnusedJson["col"] = locationUnused.col;
+
+            locationUnusedsJson.Add(locationUnusedJson);
+        }
+        json["locationUnuseds"] = locationUnusedsJson;
+
+        if (foundWords.Count > 0)
+        {
+            json["foundWords"] = new List<string>(foundWords);
+        }
+        if (recommendWords.Count > 0)
+        {
+            json["recommendWords"] = new List<string>(recommendWords);
+        }
+        if (listWordDeleted.Count > 0)
+        {
+            json["listWordDeleted"] = new List<string>(listWordDeleted);
+        }
+        if (letterHintsUsed.Count > 0)
+        {
+            json["letterHintsUsed"] = new List<char>(letterHintsUsed);
+        }
         return json;
     }
+
+    public void ShuffleListString()
+    {
+        for (int i = 0; i < words.Count; i++)
+        {
+            string temp = words[i];
+            int randomIndex = Random.Range(i, words.Count);
+            words[i] = words[randomIndex];
+            words[randomIndex] = temp;
+        }
+    }
+
+
+
 }

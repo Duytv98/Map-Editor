@@ -31,22 +31,23 @@ public class Word : MonoBehaviour
     }
     public void OnValueChanged(string str)
     {
+        Debug.Log("changed");
         var upperText = str.ToUpper();
-        Debug.Log(upperText);
         Debug.Log(CHARACTERS.Contains(upperText));
 
         if (CHARACTERS.Contains(upperText))
         {
             if (upperText != outText.text)
             {
+                Debug.Log("=========================");
                 outText.text = upperText;
                 InText = outText.text;
             }
-        }
-        else
-        {
-            outText.text = "";
-            InText = null;
+            else
+            {
+                outText.text = "";
+                InText = null;
+            }
         }
         if (!string.IsNullOrEmpty(outText.text))
         {

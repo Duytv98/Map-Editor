@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class InfoWord : MonoBehaviour
 {
     [SerializeField] private Image bg = null;
+
     [SerializeField] private InputField inputWord = null;
-    private Board.WordPlacement wordPlacement = null;
+
 
     private string word;
     private int maxWord = 0;
@@ -22,6 +24,7 @@ public class InfoWord : MonoBehaviour
     public int MaxWord
     { get => maxWord; set => maxWord = value; }
     public string Word { get => word; set => word = value; }
+
     private Dictionary<string, Word> wordUseDic = null;
 
     [SerializeField] Text bgTxtStartWord = null;
@@ -39,7 +42,6 @@ public class InfoWord : MonoBehaviour
     private void Start()
     {
         wordUseDic = new Dictionary<string, Word>();
-        wordPlacement = new Board.WordPlacement();
     }
 
     public void OnValueChanged(string str)
@@ -79,6 +81,7 @@ public class InfoWord : MonoBehaviour
             getWordBoard = true;
         }
         else if (!Word.Equals(wordChoose)) return;
+
         strartWord = position;
         bgTxtStartWord.text = string.Format("{0}x{1}", position.col, position.row);
         txtStartWord.text = string.Format("{0}x{1}", position.col, position.row);
@@ -89,8 +92,6 @@ public class InfoWord : MonoBehaviour
         wordUseDic.Clear();
         Debug.Log("SetEndWord");
         Tuple<bool, string> status = CheckLine(strartWord, position);
-        Debug.Log("wordPlacement");
-        Debug.Log(JsonUtility.ToJson(wordPlacement));
         Debug.Log("status: " + status.Item1 + "word: " + status.Item2);
         if (status.Item1 && getWordBoard)
         {
@@ -114,14 +115,10 @@ public class InfoWord : MonoBehaviour
     private Tuple<bool, string> CheckLine(Position startPos, Position endPos)
     {
         Dictionary<string, Word> dictionary = new Dictionary<string, Word>();
-
         int h = 0; // ngang (row)
         int v = 0; // doc (col)
         v = endPos.row - startPos.row >= 0 ? endPos.row - startPos.row == 0 ? 0 : 1 : -1;
         h = endPos.col - startPos.col >= 0 ? endPos.col - startPos.col == 0 ? 0 : 1 : -1;
-        wordPlacement.horizontalDirection = h;
-        wordPlacement.verticalDirection = v;
-        wordPlacement.startingPosition = startPos;
 
         int maxRow = CustomBoard.Instance.DifficultyInfo.boardRowSize;
         int maxCol = CustomBoard.Instance.DifficultyInfo.boardColumnSize;
@@ -143,8 +140,6 @@ public class InfoWord : MonoBehaviour
             if (tempPos.Equals(endPos)) status = true;
         }
         if (status) wordUseDic = dictionary;
-
-        wordPlacement.word = wordChoose;
         return Tuple.Create(status, wordChoose);
     }
 

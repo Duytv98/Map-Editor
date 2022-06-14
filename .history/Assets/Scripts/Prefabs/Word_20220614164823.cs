@@ -31,6 +31,8 @@ public class Word : MonoBehaviour
     }
     public void OnValueChanged(string str)
     {
+        Debug.Log("11111111");
+        Debug.Log("changed");
         var upperText = str.ToUpper();
         Debug.Log(upperText);
         Debug.Log(CHARACTERS.Contains(upperText));
