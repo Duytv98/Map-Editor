@@ -186,7 +186,6 @@ public class CustomBoard : MonoBehaviour
         Debug.Log(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
         Debug.Log(boardGenerate.rows);
         Debug.Log(boardGenerate.boardCharacters.Count);
-        SaveFile(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
 
     }
     private List<List<char>> GetBoardCharacters()
@@ -224,13 +223,4 @@ public class CustomBoard : MonoBehaviour
         ClearWordInfo();
     }
 
-    public void SaveFile(string txtBorad)
-    {
-        var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "", "json");
-
-        if (!string.IsNullOrEmpty(path))
-        {
-            File.WriteAllText(path, txtBorad);
-        }
-    }
 }

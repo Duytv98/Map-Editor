@@ -22,11 +22,13 @@ public class CustomBoard : MonoBehaviour
 
     [SerializeField] Image btnClear = null;
     private bool clearWord = false;
+
     private InfoWord infoWord = null;
+
 
     private DifficultyInfo difficultyInfo = null;
     private float sizeWord = 70f;
-    private Dictionary<string, Word> wordDic = null;
+    Dictionary<string, Word> wordDic = null;
     private List<InfoWord> listWordInfo = null;
 
     public InfoWord InfoWord { get => infoWord; set => infoWord = value; }
@@ -50,6 +52,13 @@ public class CustomBoard : MonoBehaviour
         DifficultyInfo = GameDefine.DIFFICULTYINFOS[0];
         CreateBoard();
         btnClear.color = ClearWord ? Color.white : Color.gray;
+        GenerateWordInfor();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
     public void OnChangeDifficulty(int val)
     {
@@ -60,8 +69,7 @@ public class CustomBoard : MonoBehaviour
     private void CreateBoard()
     {
 
-        ClearCustomBoard();
-        GenerateWordInfor();
+        ClearBoardGridLayout();
         var cols = DifficultyInfo.boardColumnSize;
         var rows = DifficultyInfo.boardRowSize;
         int column = 0;
@@ -122,27 +130,24 @@ public class CustomBoard : MonoBehaviour
     private void ClearBoardGridLayout()
     {
         Transform parentTransform = boardGridLayout.transform;
+        // Debug.Log(parentTransform.childCount);
         if (parentTransform.childCount <= 0) return;
         foreach (Transform item in parentTransform)
         {
+            // GameObject word = item.GetComponent<GameObject>();
             Destroy(item.gameObject);
         }
         WordDic.Clear();
     }
-    private void ClearWordInfo()
-    {
-        if (contentWordsAdd.childCount <= 0) return;
-        foreach (Transform item in contentWordsAdd)
-        {
-            Destroy(item.gameObject);
-        }
-        ListWordInfo.Clear();
-    }
+
     public void SetIndexListWord(Position position, string inText)
     {
         if (InfoWord == null) return;
+        // if (string.IsNullOrEmpty(InfoWord.Word))
         InfoWord.SetPositionWord(position, inText);
+        // Debug.Log(position.Log());
     }
+
     public void OnClickClear()
     {
         ClearWord = !ClearWord;
@@ -157,12 +162,8 @@ public class CustomBoard : MonoBehaviour
     }
     public void CreateLevelBoard()
     {
-        foreach (var item in WordDic)
-        {
-            if (string.IsNullOrEmpty(item.Value.InText)) return;
-        }
         Board boardGenerate = new Board();
-        List<string> words = new List<string>();
+        // ClearWordInfo();
         List<List<char>> boardCharacters = GetBoardCharacters();
         List<Board.WordPlacement> wordPlacements = new List<Board.WordPlacement>();
         foreach (var wordInfo in ListWordInfo)
@@ -174,63 +175,46 @@ public class CustomBoard : MonoBehaviour
             else
             {
                 wordPlacements.Add(wordInfo.WordPlacement);
-                words.Add(wordInfo.Word);
             }
         }
-        boardGenerate.rows = difficultyInfo.boardRowSize;
-        boardGenerate.cols = difficultyInfo.boardColumnSize;
-        boardGenerate.wordPlacements = wordPlacements;
-        boardGenerate.boardCharacters = boardCharacters;
-        boardGenerate.words = words;
+        // boardGenerate.rows = difficultyInfo.boardRowSize;
+        // boardGenerate.cols = difficultyInfo.boardColumnSize;
+        // boardGenerate.wordPlacements = wordPlacements;
+        // boardGenerate.boardCharacters = boardCharacters;
         // Debug.Log(boardGenerate.ToString());
-        Debug.Log(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
-        Debug.Log(boardGenerate.rows);
-        Debug.Log(boardGenerate.boardCharacters.Count);
-        SaveFile(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
+        // Debug.Log(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
 
+    }
+    private void ClearWordInfo()
+    {
+        for (int i = 0; i < ListWordInfo.Count; i++)
+        {
+            var wordInfo = ListWordInfo[i];
+            if (!wordInfo.IsComplate)
+            {
+                Destroy(wordInfo.gameObject);
+            }
+        }
     }
     private List<List<char>> GetBoardCharacters()
     {
         List<List<char>> listChar = new List<List<char>>();
         int maxCol = difficultyInfo.boardColumnSize;
         int col = 0;
-        int row = 0;
-        listChar.Add(new List<char>());
         List<char> listCharacters = new List<char>();
         foreach (var item in WordDic)
         {
+            Debug.Log(item.Key);
             listCharacters.Add(Char.Parse(item.Value.InText));
-        }
-        for (int i = 0; i < listCharacters.Count; i++)
-        {
-            if (col < maxCol)
+            col++;
+            if (col == maxCol)
             {
-                listChar[row].Add(listCharacters[i]);
-            }
-            else if (col == maxCol)
-            {
-                listChar.Add(new List<char>());
-                row++;
-                listChar[row].Add(listCharacters[i]);
+                listChar.Add(listCharacters);
+                listCharacters.Clear();
                 col = 0;
             }
-            col++;
         }
         return listChar;
     }
-    private void ClearCustomBoard()
-    {
-        ClearBoardGridLayout();
-        ClearWordInfo();
-    }
 
-    public void SaveFile(string txtBorad)
-    {
-        var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "", "json");
-
-        if (!string.IsNullOrEmpty(path))
-        {
-            File.WriteAllText(path, txtBorad);
-        }
-    }
 }

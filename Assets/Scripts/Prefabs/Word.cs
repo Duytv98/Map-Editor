@@ -9,8 +9,8 @@ public class Word : MonoBehaviour
     public string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     [SerializeField] private InputField outText = null;
     [SerializeField] private GameObject chooseIndex = null;
-
     [SerializeField] private Image bg = null;
+    [SerializeField] private Image highlightWord = null;
 
     private string inText = null;
 
@@ -32,8 +32,8 @@ public class Word : MonoBehaviour
     public void OnValueChanged(string str)
     {
         var upperText = str.ToUpper();
-        Debug.Log(upperText);
-        Debug.Log(CHARACTERS.Contains(upperText));
+        // Debug.Log(upperText);
+        // Debug.Log(CHARACTERS.Contains(upperText));
 
         if (CHARACTERS.Contains(upperText))
         {
@@ -68,8 +68,13 @@ public class Word : MonoBehaviour
         {
             chooseIndex.SetActive(false);
             outText.text = "";
+            SetActiveWord(false);
         }
 
+    }
+    public void SetActiveWord(bool isActive)
+    {
+        highlightWord.gameObject.SetActive(isActive);
     }
     public void SetChoid(Color color)
     {

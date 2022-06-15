@@ -22,11 +22,13 @@ public class CustomBoard : MonoBehaviour
 
     [SerializeField] Image btnClear = null;
     private bool clearWord = false;
+
     private InfoWord infoWord = null;
+
 
     private DifficultyInfo difficultyInfo = null;
     private float sizeWord = 70f;
-    private Dictionary<string, Word> wordDic = null;
+    Dictionary<string, Word> wordDic = null;
     private List<InfoWord> listWordInfo = null;
 
     public InfoWord InfoWord { get => infoWord; set => infoWord = value; }
@@ -50,6 +52,7 @@ public class CustomBoard : MonoBehaviour
         DifficultyInfo = GameDefine.DIFFICULTYINFOS[0];
         CreateBoard();
         btnClear.color = ClearWord ? Color.white : Color.gray;
+        GenerateWordInfor();
     }
     public void OnChangeDifficulty(int val)
     {
@@ -61,7 +64,6 @@ public class CustomBoard : MonoBehaviour
     {
 
         ClearCustomBoard();
-        GenerateWordInfor();
         var cols = DifficultyInfo.boardColumnSize;
         var rows = DifficultyInfo.boardRowSize;
         int column = 0;
@@ -141,8 +143,11 @@ public class CustomBoard : MonoBehaviour
     public void SetIndexListWord(Position position, string inText)
     {
         if (InfoWord == null) return;
+        // if (string.IsNullOrEmpty(InfoWord.Word))
         InfoWord.SetPositionWord(position, inText);
+        // Debug.Log(position.Log());
     }
+
     public void OnClickClear()
     {
         ClearWord = !ClearWord;
@@ -186,7 +191,6 @@ public class CustomBoard : MonoBehaviour
         Debug.Log(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
         Debug.Log(boardGenerate.rows);
         Debug.Log(boardGenerate.boardCharacters.Count);
-        SaveFile(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
 
     }
     private List<List<char>> GetBoardCharacters()
@@ -218,19 +222,12 @@ public class CustomBoard : MonoBehaviour
         }
         return listChar;
     }
+
     private void ClearCustomBoard()
     {
         ClearBoardGridLayout();
         ClearWordInfo();
+
     }
 
-    public void SaveFile(string txtBorad)
-    {
-        var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "", "json");
-
-        if (!string.IsNullOrEmpty(path))
-        {
-            File.WriteAllText(path, txtBorad);
-        }
-    }
 }

@@ -827,7 +827,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4633020216868538408}
         m_TargetAssemblyTypeName: InfoWord, Assembly-CSharp
         m_MethodName: ChooseEndWord
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

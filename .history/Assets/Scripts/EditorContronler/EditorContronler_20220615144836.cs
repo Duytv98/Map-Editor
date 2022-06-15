@@ -60,6 +60,8 @@ public class EditorContronler : MonoBehaviour
             File.WriteAllText(path, txtBorad);
         }
     }
+
+
     public void GenerateBoard()
     {
         isGenerate = false;
@@ -178,6 +180,7 @@ public class EditorContronler : MonoBehaviour
         categoryName = GetNameFile(url);
         txtCategory.text = categoryName;
         listWord = loader.downloadHandler.text;
+
     }
     private string GetNameFile(string url)
     {

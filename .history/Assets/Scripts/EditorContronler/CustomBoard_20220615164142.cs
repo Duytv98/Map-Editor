@@ -186,7 +186,6 @@ public class CustomBoard : MonoBehaviour
         Debug.Log(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
         Debug.Log(boardGenerate.rows);
         Debug.Log(boardGenerate.boardCharacters.Count);
-        SaveFile(Utilities.ConvertToJsonString(boardGenerate.ToJson()));
 
     }
     private List<List<char>> GetBoardCharacters()

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using SFB;
+using SimpleJSON;
 public class EditorContronler : MonoBehaviour
 {
 
@@ -60,6 +61,8 @@ public class EditorContronler : MonoBehaviour
             File.WriteAllText(path, txtBorad);
         }
     }
+
+
     public void GenerateBoard()
     {
         isGenerate = false;
@@ -178,6 +181,7 @@ public class EditorContronler : MonoBehaviour
         categoryName = GetNameFile(url);
         txtCategory.text = categoryName;
         listWord = loader.downloadHandler.text;
+
     }
     private string GetNameFile(string url)
     {
